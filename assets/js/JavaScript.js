@@ -1,4 +1,7 @@
-const counterContainer = document.getElementById("counterContainer");
+//creazione section 
+const counterContainer = document.createElement("section");
+counterContainer.id = "counterContainer";
+document.body.appendChild(counterContainer);
 // display counter
 const display = document.createElement("h1");
 display.id = "totale";
