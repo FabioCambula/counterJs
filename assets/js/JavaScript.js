@@ -13,7 +13,6 @@ btnIncrease.addEventListener("click", () => {
     let numero = parseInt(display.textContent);
     display.textContent = ++numero;
 });
-counterContainer.appendChild(btnIncrease);
 
 //button reset
 const btnReset = document.createElement("button");
@@ -22,8 +21,6 @@ btnReset.textContent = "reset";
 btnReset.addEventListener("click", () => {
     display.textContent = 0;
 });
-counterContainer.appendChild(btnReset);
-
 // button -
 const btnDecrease = document.createElement("button");
 btnDecrease.id="btnDecrease"
@@ -34,7 +31,6 @@ btnDecrease.addEventListener("click", () => {
         display.textContent = --numero;
     }
 });
-counterContainer.appendChild(btnDecrease);
 //button per salvare valore in una lista
 const btnSave = document.createElement("button");
 btnSave.id="btnSave"
@@ -45,7 +41,7 @@ btnSave.addEventListener("click",()=>{
         aggiungiElemento(numero);
     }
 });
-counterContainer.appendChild(btnSave);
+
 //creazione elemento <ul> per lista
 const lista = document.createElement("ul");
 lista.id = "valoreSalvato";
@@ -66,8 +62,7 @@ btnRemove.addEventListener("click", () => {
         lista.removeChild(lista.lastChild);
     }
 });
-counterContainer.appendChild(btnRemove);
-
+//creazione del div per contenere i pulsanti
 const controls = document.createElement("div");
 controls.className = "controls";
 
@@ -78,5 +73,5 @@ controls.appendChild(btnDecrease);
 controls.appendChild(btnSave);
 controls.appendChild(btnRemove);
 
-// Aggiungi il contenitore "controls" al counterContainer
+//aggiungi contenitore "controls" al counterContainer 
 counterContainer.appendChild(controls);
