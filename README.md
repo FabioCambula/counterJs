@@ -14,6 +14,8 @@ __________
 
 - Rimozione dell'ultimo valore salvato dalla lista.
 
+- Rimozione di tutti i valori della lista.
+
 - Design responsive ottimizzato per dispositivi mobili e desktop.
 
 ## TECNOLOGIE UTILIZZATE
