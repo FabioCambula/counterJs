@@ -1,80 +1,93 @@
-//creazione section 
-const counterContainer = document.createElement("section");
-counterContainer.id = "counterContainer";
+// Funzione per creare elementi DOM
+function creaElemento(tagName, className = "", textContent = "", attributes = {}) {
+    const element = document.createElement(tagName);
+    if (className) element.className = className;
+    if (textContent) element.textContent = textContent;  
+
+    for (const [key, value] of Object.entries(attributes)) {
+        element.setAttribute(key, value);
+    }
+
+    return element;
+}
+
+// Contenitore principale
+const counterContainer = creaElemento("section", "", "", { id: "counterContainer" });
 document.body.appendChild(counterContainer);
-// display counter
-const display = document.createElement("h1");
-display.id = "totale";
-display.textContent = 0;
+
+// Display counter
+const display = creaElemento("h1", "", "0", { id: "totale" });
 counterContainer.appendChild(display);
 
-//button +
-const btnIncrease = document.createElement("button");
-btnIncrease.id="btnIncrease"
-btnIncrease.textContent = "+";
-btnIncrease.addEventListener("click", () => {
-    let numero = parseInt(display.textContent);
-    display.textContent = ++numero;
-});
+// Pulsanti
+const btnIncrease = creaElemento("button", "btnIncrease", "+", { "data-action": "btnIncrease" });
+const btnReset = creaElemento("button", "btnReset", "Reset", { "data-action": "btnReset" });
+const btnDecrease = creaElemento("button", "btnDecrease", "-", { "data-action": "btnDecrease" });
+const btnSave = creaElemento("button", "btnSave", "Salva valore", { "data-action": "btnSave" });
+const btnRemove = creaElemento("button", "btnRemove", "Rimuovi ultimo valore", { "data-action": "btnRemove" });
+const btnClearList = creaElemento("button", "btnClearList", "Pulisci lista", { "data-action": "btnClearList" });
 
-//button reset
-const btnReset = document.createElement("button");
-btnReset.id="btnReset"
-btnReset.textContent = "reset";
-btnReset.addEventListener("click", () => {
-    display.textContent = 0;
-});
-// button -
-const btnDecrease = document.createElement("button");
-btnDecrease.id="btnDecrease"
-btnDecrease.textContent = "-";
-btnDecrease.addEventListener("click", () => {
-       let numero = parseInt(display.textContent);
-    if (numero > 0) {
-        display.textContent = --numero;
-    }
-});
-//button per salvare valore in una lista
-const btnSave = document.createElement("button");
-btnSave.id="btnSave"
-btnSave.textContent="salva valore";
-btnSave.addEventListener("click",()=>{
-    let numero = parseInt(display.textContent);
-    if (numero>0){
-        aggiungiElemento(numero);
-    }
-});
-
-//creazione elemento <ul> per lista
-const lista = document.createElement("ul");
-lista.id = "valoreSalvato";
+// Lista per i valori salvati
+const lista = creaElemento("ul", "", "", { id: "valoreSalvato" });
 counterContainer.appendChild(lista);
 
-// Funzione per aggiungere un elemento alla lista
 function aggiungiElemento(valore) {
-    const li = document.createElement("li");
-    li.textContent = valore;
+    const li = creaElemento("li", "", valore);
     lista.appendChild(li);
 }
-//button per rimuovere ultimo elemento dalla lista
-const btnRemove = document.createElement("button");
-btnRemove.id="btnRemove"
-btnRemove.textContent = "rimuovi ultimo valore";
-btnRemove.addEventListener("click", () => {
-    if (lista.lastChild) {
-        lista.removeChild(lista.lastChild);
-    }
-});
-//creazione del div per contenere i pulsanti
-const controls = document.createElement("div");
-controls.className = "controls";
 
-// Aggiungi i pulsanti al contenitore "controls"
-controls.appendChild(btnIncrease);
-controls.appendChild(btnReset);
-controls.appendChild(btnDecrease);
-controls.appendChild(btnSave);
-controls.appendChild(btnRemove);
-
-//aggiungi contenitore "controls" al counterContainer 
+// Contenitore pulsanti
+const controls = creaElemento("div", "", "", { id: "controls" });
+controls.append(btnIncrease, btnReset, btnDecrease, btnSave, btnRemove, btnClearList);
 counterContainer.appendChild(controls);
+
+// Variabile numero
+let numero = parseInt(display.textContent);
+
+class Menu {
+    constructor(elem) {
+        this._elem = elem;
+        elem.onclick = this.onClick.bind(this);
+    }
+
+    btnIncrease() {
+        display.textContent = ++numero;
+    }
+
+    btnReset() {
+        numero = 0;
+        display.textContent = numero;
+    }
+
+    btnDecrease() {
+        if (numero > 0) {
+            display.textContent = --numero;
+        }
+    }
+
+    btnSave() {
+        if (numero > 0) {
+            aggiungiElemento(numero);
+        }
+    }
+
+    btnRemove() {
+        if (lista.lastChild) {
+            lista.removeChild(lista.lastChild);
+        }
+    }
+
+    btnClearList() {
+        lista.innerHTML = "";
+    }
+
+    onClick(event) {
+        let action = event.target.dataset.action;
+        if (action && typeof this[action] === "function") {
+            this[action]();
+        }
+    }
+}
+
+// Inizializza il menu
+new Menu(document.getElementById('controls'));
